@@ -14,17 +14,17 @@ services:
     networks:
       - my-network
 
-  python-app:
-    build:
-      context: .
-    container_name: python-app
-    depends_on:
-      - minio
-    networks:
-      - my-network
-    volumes:
-      - .:/app
-    tty: true
+#   python-app:
+#     build:
+#       context: .
+#     container_name: python-app
+#     depends_on:
+#       - minio
+#     networks:
+#       - my-network
+#     volumes:
+#       - .:/app
+#     tty: true
 
 networks:
   my-network:
