@@ -4,6 +4,7 @@ import re
 import torch
 from minio import Minio
 import ollama
+import pdfplumber
 
 minio_client = Minio(
     "localhost:9000",
@@ -12,6 +13,7 @@ minio_client = Minio(
     secure=False
 )
 
+VAULT_FILE = "data/vault.txt"
 EMBEDDINGS_FILE = "data/vault_embeddings.pt"  # Fichier pour sauvegarder les embeddings
 TEMP_DIR = "data/temp/"
 os.makedirs(TEMP_DIR, exist_ok=True)  # Crée le répertoire temporaire s'il n'existe pas
@@ -77,12 +79,10 @@ def process_pdf_from_minio():
         print("Impossible de télécharger le fichier PDF.")
         return
     try:
-        with open(downloaded_file, 'rb') as pdf_file:
-            pdf_reader = PyPDF2.PdfReader(pdf_file)
-            text = ''
-            for page in pdf_reader.pages:
-                if page.extract_text():
-                    text += page.extract_text() + " "
+        text = ''
+        with pdfplumber.open(downloaded_file) as pdf:
+            for page in pdf.pages:
+                text += page.extract_text() + " "
         chunks = process_and_save_text(text)
 
         embeddings = generate_embeddings(chunks)
@@ -110,17 +110,3 @@ def search_relevant_context(question):
     print("\nContexte pertinent :")
     for idx in top_indices:
         print(f"- {vault_content[idx]}")
-
-if __name__ == "__main__":
-    print("Options :")
-    print("1. Traiter un fichier PDF depuis MinIO")
-    print("2. Rechercher un contexte pertinent dans le vault")
-    choice = input("Entrez votre choix (1 ou 2) : ")
-
-    if choice == "1":
-        process_pdf_from_minio()
-    elif choice == "2":
-        question = input("Entrez votre question : ")
-        search_relevant_context(question)
-    else:
-        print("Choix invalide.")
