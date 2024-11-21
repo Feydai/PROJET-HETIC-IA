@@ -4,6 +4,10 @@ WORKDIR /app
 
 RUN python3 -m venv /app/env
 
+RUN /app/env/bin/pip install --upgrade pip
+
 COPY . .
 
-CMD ["/bin/bash", "-c", "source /app/env/bin/activate && exec /bin/bash"]
+ENV PATH="/app/env/bin:$PATH"
+
+CMD ["/bin/bash"]
