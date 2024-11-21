@@ -1,4 +1,5 @@
 version: "3.9"
+
 services:
   minio:
     image: quay.io/minio/minio
@@ -10,6 +11,8 @@ services:
       MINIO_ROOT_USER: admin
       MINIO_ROOT_PASSWORD: password
     command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
     networks:
       - my-network
 
@@ -23,7 +26,11 @@ services:
       - minio
     volumes:
       - .:/app
-    tty: true
+    command: >
+      sh -c "sleep 5 && python /app/init_minio.py && /bin/bash"
 
 networks:
   my-network:
+
+volumes:
+  minio-data:
