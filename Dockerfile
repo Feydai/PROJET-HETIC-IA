@@ -1,18 +1,16 @@
 FROM python:3.9-slim
 
+# Set the working directory inside the container
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y python3-venv && apt-get clean
-
+# Create a virtual environment in the /app directory
 RUN python3 -m venv /app/env
 
-RUN /app/env/bin/pip install --upgrade pip
-
+# Copy the current directory contents into the container at /app
 COPY . .
 
-ENV PATH="/app/env/bin:$PATH"
+# Set the PYTHONPATH environment variable
+ENV PYTHONPATH=/app
 
-RUN pip install --no-cache-dir -r requirements.txt
-
-CMD ["/bin/bash"]
-
+# Activate the virtual environment and start a shell
+CMD ["/bin/bash", "-c", "source /app/env/bin/activate && exec /bin/bash"]
