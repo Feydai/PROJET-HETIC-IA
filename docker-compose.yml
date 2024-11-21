@@ -1,33 +1,42 @@
-services:
-  minio:
-    image: quay.io/minio/minio
-    container_name: minio
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      MINIO_ROOT_USER: admin
-      MINIO_ROOT_PASSWORD: password
-    command: server /data --console-address ":9001"
-    volumes:
-      - minio-data:/data
-    networks:
-      - my-network
+version: "3.8"
 
-#   python-app:
-#     build:
-#       context: .
-#     container_name: python-app
-#     depends_on:
-#       - minio
-#     networks:
-#       - my-network
-#     volumes:
-#       - .:/app
-#     tty: true
+services:
+    minio:
+        image: quay.io/minio/minio
+        container_name: minio
+        ports:
+            - "9000:9000"
+            - "9001:9001"
+        environment:
+            MINIO_ROOT_USER: admin
+            MINIO_ROOT_PASSWORD: password
+        command: server /data --console-address ":9001"
+        volumes:
+            - minio-data:/data
+        networks:
+            - my-network
+
+    setup-minio:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: setup-minio
+        depends_on:
+            - minio
+        environment:
+            MINIO_URL: "http://minio:9000"
+            MINIO_ROOT_USER: admin
+            MINIO_ROOT_PASSWORD: password
+            BUCKET_NAME: "documents"
+            FILE_PATH: "/data/temp/guide.pdf"
+        volumes:
+            - ./data/temp:/data/temp
+        networks:
+            - my-network
+        restart: on-failure
 
 networks:
-  my-network:
+    my-network:
 
 volumes:
-  minio-data:
+    minio-data:

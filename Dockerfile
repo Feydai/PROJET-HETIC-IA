@@ -1,16 +1,18 @@
-FROM python:3.9-slim
+# Utiliser une image Debian comme base
+FROM debian:bullseye-slim
 
-# Set the working directory inside the container
-WORKDIR /app
+# Installer curl, mc et autres dépendances
+RUN apt-get update && apt-get install -y curl wget bash && rm -rf /var/lib/apt/lists/*
 
-# Create a virtual environment in the /app directory
-RUN python3 -m venv /app/env
+# Télécharger le client MinIO (mc)
+RUN wget https://dl.min.io/client/mc/release/linux-amd64/mc -O /usr/bin/mc && \
+    chmod +x /usr/bin/mc
 
-# Copy the current directory contents into the container at /app
-COPY . .
+# Copier le script dans le conteneur
+COPY setup-minio.sh /usr/local/bin/setup-minio.sh
 
-# Set the PYTHONPATH environment variable
-ENV PYTHONPATH=/app
+# Rendre le script exécutable
+RUN chmod +x /usr/local/bin/setup-minio.sh
 
-# Activate the virtual environment and start a shell
-CMD ["/bin/bash", "-c", "source /app/env/bin/activate && exec /bin/bash"]
+# Définir le point d'entrée
+ENTRYPOINT ["/usr/local/bin/setup-minio.sh"]
