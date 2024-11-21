@@ -34,6 +34,7 @@ services:
         networks:
             - my-network
         restart: on-failure
+        entrypoint: ["/usr/local/bin/setup-minio.sh"]
 
 networks:
     my-network:
