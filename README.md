@@ -34,11 +34,59 @@ Avant de commencer, assurez-vous d’avoir installé les outils suivants :
 
 ---
 
-## **Installation**
+## **Installation et Utilisation**
 
-1. **Cloner le projet** :
+   **Cloner le projet** :
+
    ```bash
    git clone https://github.com/Feydai/PROJET-HETIC-IA.git
    cd PROJET-HETIC-I
+   ```
 
+   **Démarrer les services Docker**
+
+   Étape 1 : Démarrer les services Docker
+   Exécutez la commande suivante pour lancer les services nécessaires :
+
+   ```bash
+   make up
+   ```
+
+   **Installer les dépendances**
+
+   Étape 2 : Exécuter l'application
+   Une fois les services en cours d’exécution, lancez l’application principale :
+
+   ```bash
+   make run
+   ```
+
+   **Arreter les services Docker**
+
+   Étape 3 : Arrêter les services Docker
+   Lorsque vous avez terminé, arrêtez les services Docker avec :
+
+   ```bash
+   make down
+   ```
+   ### **Commandes disponibles**
+   
+   | Commande | Description |
+   | --- | --- |
+   | `make up` | Démarre les services Docker (MinIO, etc.). |
+   | `make down` | Arrête et supprime les services Docker en cours d’exécution. |
+   | `make logs` | Affiche les logs des services Docker. |
+   | `make run` | Exécute tout le projet (environnement, dépendances, script principal). |
+
+   ### **À propos des fichiers**
+
+   - **app/main.py** : Point d’entrée principal de l’application..
+   - **app/rag.py** : Contient les fonctions liées à la recherche contextuelle avec RAG..
+   - **docker-compose.yml** : Fichier de configuration Docker Compose..
+   - **requirements.txt** : Liste des dépendances Python nécessaires..
+   - **Makefile** : Automatisation des tâches courantes..
+
+   ### **Contributeurs**
+   
+   **SUN Léo**
 
