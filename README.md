@@ -59,16 +59,50 @@ Avant de commencer, assurez-vous d’avoir installé les outils suivants :
 
    ```bash
    make run
-   ```
-
+   ```   
    **Arreter les services Docker**
 
    Étape 3 : Arrêter les services Docker
-   Lorsque vous avez terminé, arrêtez les services Docker avec :
+   Lorsque vous avez terminé, arrêtez les services Docker     avec :
 
    ```bash
    make down
    ```
+   ---
+   
+   ## **Menu principal**
+   
+   ```py
+   Bienvenue dans l'application de recherche contextuelle      avec Ollama !
+   Choisissez une option :
+   1. Traiter un fichier PDF depuis MinIO (Préparer le Vault)
+   2. Rechercher un contexte pertinent avec RAG
+   3. Chat sans RAG (Interaction directe)
+   4. Changer la température du LLM (Température actuelle :    0.7)
+   Tapez 'quit' pour quitter.
+   ```
+
+   **Option 1 : Traiter un fichier PDF depuis MinIO**
+   - Télécharge le fichier PDF depuis MinIO.
+   - Extrait le texte et le sauvegarde dans vault.txt.
+   - Génère les embeddings et les sauvegarde dans       vault_embeddings.pt.
+
+   **Option 2 : Rechercher un contexte pertinent avec RAG**
+   - Entrez une question. Le programme analysera le texte    dans vault.txt pour fournir un contexte pertinent.
+
+   **Option 3 : Chat sans RAG**
+   - Entrez une question ou un message pour interagir       directement avec le modèle LLM.
+     
+   **Option 4 : Changer la température du LLM**
+   - Ajustez la température pour influencer la créativité    des réponses :
+       - 0.1-0.5 : Réponses plus cohérentes et factuelles.
+       - 0.7-1.2 : Réponses plus créatives et variées.
+
+   **Quitter:**
+   - Tapez ```quit``` pour quitter le programme.
+
+   ---
+   
    ### **Commandes disponibles**
    
    | Commande | Description |
